@@ -1,6 +1,6 @@
 # Roadmap GUAPA (MVP)
 
-- [ ] Etapa 0: sistema de diseño claro/oscuro, layout, navegación, 404, landing y páginas públicas con contenido de ejemplo
+- [x] Etapa 0: sistema de diseño claro/oscuro, layout, navegación, 404, landing y páginas públicas con contenido de ejemplo
 - [ ] Etapa 1: Lovable Cloud, registro, login, logout, recuperación, perfiles, roles — bloqueada por Q3, Q9, Q12
 - [ ] Etapa 2: admin base y contenido público editable
 - [ ] Etapa 3: recursos — bloqueada por Q6
