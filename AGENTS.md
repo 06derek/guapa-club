@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Public site chrome (header, footer, theme toggle) lives in `src/components/site/` and wraps every route from `src/routes/__root.tsx`; why: one shared layout for public and member areas.
+- Public club content (horarios, actividades, contacto) is read from `src/content/site.ts` until the admin content module exists; why: single swap point when it moves to the database.
+- Theme is a `dark` class on `<html>` set by an inline head script from localStorage key `guapa-theme`; why: avoids light/dark flash before hydration.
+- All colors come from tokens in `src/styles.css` (incl. `gold`, `success`, `surface`); components never use raw color classes.
