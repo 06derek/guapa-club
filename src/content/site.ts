@@ -106,7 +106,7 @@ export function sortActivitiesByDate(list: Activity[]): Activity[] {
 }
 
 export function formatDate(iso: string): string {
-  const [y, m, d] = iso.split("-").map(Number);
+  const [y = 1970, m = 1, d = 1] = iso.split("-").map(Number);
   return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("es-MX", {
     day: "numeric",
     month: "long",
