@@ -11,8 +11,8 @@ import { AuthShell, FieldError } from "@/components/site/auth-shell";
 import { authErrorMessage, loginSchema, safeRedirect, type LoginInput } from "@/lib/auth-rules";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string } => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined } => ({
+    redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined,
   }),
   head: () => ({
     meta: [
