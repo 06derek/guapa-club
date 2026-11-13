@@ -40,6 +40,7 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 
 export function authErrorMessage(message: string | undefined): string {
   const m = (message ?? "").toLowerCase();
+  if (m.includes("correos institucionales") || m.includes("inválido")) return message ?? "";
   if (m.includes("invalid login credentials")) return "Correo o contraseña incorrectos.";
   if (m.includes("email not confirmed")) return "Confirma tu correo antes de iniciar sesión.";
   if (m.includes("already registered") || m.includes("already been registered"))
