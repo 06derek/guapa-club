@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 import { navLinks } from "./nav-links";
+import { UserMenu } from "./user-menu";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -42,6 +43,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-1">
           <ThemeToggle />
+          <UserMenu />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden" aria-label="Abrir menú">

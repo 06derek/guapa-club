@@ -16,6 +16,7 @@ import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
+import { AuthProvider } from "@/lib/auth";
 
 const themeScript = `(function(){try{var t=localStorage.getItem('guapa-theme');var d=t?t==='dark':true;document.documentElement.classList.toggle('dark',d)}catch(e){document.documentElement.classList.add('dark')}})()`;
 
@@ -141,6 +142,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <AuthProvider>
       <div className="flex min-h-screen flex-col">
         <SiteHeader />
         <main className="flex-1">
@@ -149,6 +151,7 @@ function RootComponent() {
         <SiteFooter />
       </div>
       <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
