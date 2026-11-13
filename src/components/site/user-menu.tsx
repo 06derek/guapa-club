@@ -28,7 +28,7 @@ export function UserMenu() {
     );
   }
 
-  const username = (user.user_metadata?.username as string | undefined) ?? user.email ?? "";
+  const username = (user.user_metadata?.["username"] as string | undefined) ?? user.email ?? "";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
