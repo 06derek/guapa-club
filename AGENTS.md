@@ -35,3 +35,5 @@ use the editor.
 - Public club content (horarios, actividades, contacto) is read from `src/content/site.ts` until the admin content module exists; why: single swap point when it moves to the database.
 - Theme is a `dark` class on `<html>` set by an inline head script from localStorage key `guapa-theme`; why: avoids light/dark flash before hydration.
 - All colors come from tokens in `src/styles.css` (incl. `gold`, `success`, `surface`); components never use raw color classes.
+- Auth: email/password via Lovable Cloud; UNAM-only signup is enforced by the `handle_new_user` trigger on auth.users (client zod check in `src/lib/auth-rules.ts` only mirrors it); why: the domain rule must hold even if the UI is bypassed.
+- Roles live in `public.user_roles` checked with `has_role()`; private pages under `src/routes/_authenticated/`, admin pages under `_authenticated/_admin/`; session state comes from `AuthProvider` in `src/lib/auth.tsx`; why: permissions are enforced by RLS, route guards only shape the UI.
