@@ -22,7 +22,7 @@ const adminUsersQuery = queryOptions({
   },
 });
 
-export const Route = createFileRoute("/_authenticated/_admin/admin")({
+export const Route = createFileRoute("/_authenticated/_admin/admin/")({
   head: () => ({ meta: [{ title: "Administración · GUAPA" }, { name: "robots", content: "noindex" }] }),
   loader: ({ context }) => context.queryClient.ensureQueryData(adminUsersQuery),
   component: AdminPage,
@@ -48,16 +48,15 @@ function AdminPage() {
   });
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">{"// administración"}</p>
-      <h1 className="mt-3 text-3xl font-bold sm:text-4xl">Usuarios y permisos</h1>
-      <p className="mt-2 text-muted-foreground">{users.length} usuarios registrados.</p>
+    <>
+      <h2 className="text-2xl font-bold">Usuarios y permisos</h2>
+      <p className="mt-1 text-muted-foreground">{users.length} usuarios registrados.</p>
 
       <div className="mt-8 overflow-hidden rounded-xl border border-border bg-card shadow-card">
         <ul className="divide-y divide-border">
           {users.map((u) => (
             <li key={u.id} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+              <div className="min-w-0">
                 <p className="font-medium">
                   {u.full_name}{" "}
                   {u.isAdmin ? (
@@ -82,6 +81,6 @@ function AdminPage() {
           ))}
         </ul>
       </div>
-    </section>
+    </>
   );
 }
