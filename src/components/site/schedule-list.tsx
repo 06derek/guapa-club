@@ -6,7 +6,7 @@ export function ScheduleList({ items }: { items: Schedule[] }) {
     <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-card">
       {items.map((s) => (
         <li
-          key={`${s.day}-${s.start}`}
+          key={`${s.day}-${s.start}-${s.activity}`}
           className="grid gap-2 px-5 py-4 transition-colors hover:bg-accent/50 sm:grid-cols-[8rem_9rem_1fr_auto] sm:items-center sm:gap-6"
         >
           <span className="font-display font-semibold">{s.day}</span>

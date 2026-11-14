@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, BookOpen, CalendarDays, Cpu, Trophy, Users, BarChart3, Swords } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +7,8 @@ import { CodeCard } from "@/components/site/code-card";
 import { SectionHeading, SampleNotice } from "@/components/site/section-heading";
 import { ActivityCard } from "@/components/site/activity-card";
 import { ScheduleList } from "@/components/site/schedule-list";
-import { activities, club, pillars, schedules, sortActivitiesByDate, contact } from "@/content/site";
+import { club, pillars, contact } from "@/content/site";
+import { activitiesQuery, schedulesQuery } from "@/lib/public-content";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,6 +28,11 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(activitiesQuery),
+      context.queryClient.ensureQueryData(schedulesQuery),
+    ]),
   component: Index,
 });
 
@@ -39,36 +46,38 @@ const platformFeatures = [
 ];
 
 function Index() {
-  const recent = sortActivitiesByDate(activities).slice(0, 3);
+  const { data: acts } = useSuspenseQuery(activitiesQuery);
+  const { data: sched } = useSuspenseQuery(schedulesQuery);
+  const recent = acts.items.slice(0, 3);
   return (
     <>
       {/* Portada */}
       <section className="relative -mt-16 overflow-hidden pt-16">
         <div className="bg-grid mask-fade-b absolute inset-0" aria-hidden />
         <div className="bg-hero absolute inset-0" aria-hidden />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-20 pt-14 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pt-24">
-          <div>
-            <p className="animate-fade-up font-mono text-xs uppercase tracking-[0.2em] text-gold">
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-4 pb-20 pt-10 sm:gap-14 sm:px-6 sm:pt-14 lg:grid-cols-[1.1fr_1fr] lg:pt-24">
+          <div className="min-w-0">
+            <p className="animate-fade-up font-mono text-[11px] uppercase tracking-[0.16em] text-gold sm:text-xs sm:tracking-[0.2em]">
               {`// ${club.institution} · ${club.parent}`}
             </p>
-            <h1 className="animate-fade-up mt-5 text-5xl font-bold leading-[1.02] [animation-delay:80ms] sm:text-6xl lg:text-7xl">
+            <h1 className="animate-fade-up mt-5 text-[2.6rem] font-bold leading-[1.05] [animation-delay:80ms] min-[400px]:text-5xl sm:text-6xl lg:text-7xl">
               Algoritmia que se <span className="text-brand-gradient">entrena en equipo.</span>
             </h1>
-            <p className="animate-fade-up mt-6 max-w-xl text-lg text-muted-foreground [animation-delay:160ms]">
+            <p className="animate-fade-up mt-6 max-w-xl text-base text-muted-foreground sm:text-lg [animation-delay:160ms]">
               {club.fullName}. Resolvemos problemas, competimos y aprendemos juntos.
             </p>
             <div className="animate-fade-up mt-8 flex flex-wrap gap-3 [animation-delay:240ms]">
-              <Button asChild variant="gold" size="lg">
+              <Button asChild variant="gold" size="lg" className="w-full sm:w-auto">
                 <Link to="/actividades">
                   Ver actividades <ArrowRight />
                 </Link>
               </Button>
-              <Button asChild variant="glass" size="lg">
+              <Button asChild variant="glass" size="lg" className="w-full sm:w-auto">
                 <Link to="/horarios">Horarios de entrenamiento</Link>
               </Button>
             </div>
           </div>
-          <div className="animate-fade-up [animation-delay:200ms]">
+          <div className="animate-fade-up min-w-0 [animation-delay:200ms]">
             <CodeCard />
           </div>
         </div>
@@ -113,11 +122,13 @@ function Index() {
               </Button>
             }
           />
-          <div className="mt-4">
-            <SampleNotice />
-          </div>
+          {sched.isSample ? (
+            <div className="mt-4">
+              <SampleNotice />
+            </div>
+          ) : null}
           <div className="mt-8">
-            <ScheduleList items={schedules} />
+            <ScheduleList items={sched.items} />
           </div>
         </div>
       </section>
@@ -135,9 +146,11 @@ function Index() {
             </Button>
           }
         />
-        <div className="mt-4">
-          <SampleNotice />
-        </div>
+        {acts.isSample ? (
+          <div className="mt-4">
+            <SampleNotice />
+          </div>
+        ) : null}
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {recent.map((a) => (
             <ActivityCard key={a.id} activity={a} />
