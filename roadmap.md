@@ -3,9 +3,10 @@
 - [x] Etapa 0: sistema de diseño claro/oscuro, layout, navegación, 404, landing y páginas públicas con contenido de ejemplo
 - [x] Etapa 1: Lovable Cloud, registro (solo UNAM), login, logout, perfiles, roles, guardias de rutas
 - [ ] Asignar primer administrador — espera el correo del cliente
-- [ ] Etapa 2: admin base y contenido público editable
+- [x] Ajuste responsive en celular (título y código de la portada)
+- [ ] Etapa 2: admin registra actividades y horarios (RF-007); editar/borrar son Condicionales
 - [ ] Etapa 3: recursos — bloqueada por Q6
-- [ ] Etapa 4: miembros y equipos (cualquier usuario crea y agrega) — bloqueada por Q10
+- [ ] Etapa 4: miembros (solo con sesión hasta Q10) y equipos: crear, agregar (máx. 5), ver, admin renombra/borra
 - [ ] Etapa 5: Codeforces — bloqueada por Q4, Q13
 - [ ] Etapa 6: Scoreboard — bloqueada por Q5
 - [ ] Etapa 7: competencias externas — bloqueada por Q8

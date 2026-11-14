@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          activity_date: string
+          created_at: string
+          created_by: string
+          description: string
+          id: string
+          tag: string
+          title: string
+        }
+        Insert: {
+          activity_date: string
+          created_at?: string
+          created_by?: string
+          description: string
+          id?: string
+          tag: string
+          title: string
+        }
+        Update: {
+          activity_date?: string
+          created_at?: string
+          created_by?: string
+          description?: string
+          id?: string
+          tag?: string
+          title?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -44,6 +74,99 @@ export type Database = {
           is_active?: boolean
           updated_at?: string
           username?: string
+        }
+        Relationships: []
+      }
+      schedules: {
+        Row: {
+          activity: string
+          created_at: string
+          created_by: string
+          day_of_week: number
+          end_time: string
+          id: string
+          place: string
+          start_time: string
+        }
+        Insert: {
+          activity: string
+          created_at?: string
+          created_by?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          place: string
+          start_time: string
+        }
+        Update: {
+          activity?: string
+          created_at?: string
+          created_by?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          place?: string
+          start_time?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          added_by: string
+          joined_at: string
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          added_by?: string
+          joined_at?: string
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          added_by?: string
+          joined_at?: string
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teams: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          name?: string
         }
         Relationships: []
       }
@@ -78,6 +201,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_team_member: {
+        Args: { _team_id: string; _user_id: string }
         Returns: boolean
       }
       is_unam_email: { Args: { _email: string }; Returns: boolean }
