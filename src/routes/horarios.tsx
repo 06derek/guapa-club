@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { PageHero, SampleNotice } from "@/components/site/section-heading";
 import { ScheduleList } from "@/components/site/schedule-list";
-import { schedules } from "@/content/site";
+import { schedulesQuery } from "@/lib/public-content";
 
 export const Route = createFileRoute("/horarios")({
   head: () => ({
@@ -14,19 +15,21 @@ export const Route = createFileRoute("/horarios")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(schedulesQuery),
   component: HorariosPage,
 });
 
 function HorariosPage() {
+  const { data } = useSuspenseQuery(schedulesQuery);
   return (
     <>
       <PageHero eyebrow="horarios" title="Horarios de entrenamiento">
         Sesiones abiertas para estudiantes de la FES Acatlán.
       </PageHero>
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <SampleNotice />
-        <div className="mt-8">
-          <ScheduleList items={schedules} />
+        {data.isSample ? <SampleNotice /> : null}
+        <div className={data.isSample ? "mt-8" : ""}>
+          <ScheduleList items={data.items} />
         </div>
       </section>
     </>

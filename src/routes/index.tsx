@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, BookOpen, CalendarDays, Cpu, Trophy, Users, BarChart3, Swords } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +7,8 @@ import { CodeCard } from "@/components/site/code-card";
 import { SectionHeading, SampleNotice } from "@/components/site/section-heading";
 import { ActivityCard } from "@/components/site/activity-card";
 import { ScheduleList } from "@/components/site/schedule-list";
-import { activities, club, pillars, schedules, sortActivitiesByDate, contact } from "@/content/site";
+import { club, pillars, contact } from "@/content/site";
+import { activitiesQuery, schedulesQuery } from "@/lib/public-content";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,6 +28,11 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(activitiesQuery),
+      context.queryClient.ensureQueryData(schedulesQuery),
+    ]),
   component: Index,
 });
 
@@ -39,7 +46,9 @@ const platformFeatures = [
 ];
 
 function Index() {
-  const recent = sortActivitiesByDate(activities).slice(0, 3);
+  const { data: acts } = useSuspenseQuery(activitiesQuery);
+  const { data: sched } = useSuspenseQuery(schedulesQuery);
+  const recent = acts.items.slice(0, 3);
   return (
     <>
       {/* Portada */}
@@ -113,11 +122,13 @@ function Index() {
               </Button>
             }
           />
-          <div className="mt-4">
-            <SampleNotice />
-          </div>
+          {sched.isSample ? (
+            <div className="mt-4">
+              <SampleNotice />
+            </div>
+          ) : null}
           <div className="mt-8">
-            <ScheduleList items={schedules} />
+            <ScheduleList items={sched.items} />
           </div>
         </div>
       </section>
@@ -135,9 +146,11 @@ function Index() {
             </Button>
           }
         />
-        <div className="mt-4">
-          <SampleNotice />
-        </div>
+        {acts.isSample ? (
+          <div className="mt-4">
+            <SampleNotice />
+          </div>
+        ) : null}
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {recent.map((a) => (
             <ActivityCard key={a.id} activity={a} />

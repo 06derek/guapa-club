@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { PageHero, SampleNotice } from "@/components/site/section-heading";
 import { ActivityCard } from "@/components/site/activity-card";
-import { activities, sortActivitiesByDate } from "@/content/site";
+import { activitiesQuery } from "@/lib/public-content";
 
 export const Route = createFileRoute("/actividades")({
   head: () => ({
@@ -14,18 +15,20 @@ export const Route = createFileRoute("/actividades")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(activitiesQuery),
   component: ActividadesPage,
 });
 
 function ActividadesPage() {
-  const list = sortActivitiesByDate(activities);
+  const { data } = useSuspenseQuery(activitiesQuery);
+  const list = data.items;
   return (
     <>
       <PageHero eyebrow="actividades" title="Actividades recientes">
         Talleres, simulacros y sesiones del grupo, de la más reciente a la más antigua.
       </PageHero>
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <SampleNotice />
+        {data.isSample ? <SampleNotice /> : null}
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((a) => (
             <ActivityCard key={a.id} activity={a} />
