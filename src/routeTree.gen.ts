@@ -21,6 +21,7 @@ import { Route as AuthenticatedPanelRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as AuthenticatedAdminAdminRouteRouteImport } from './routes/_authenticated/_admin/admin/route'
 import { Route as AuthenticatedAdminAdminIndexRouteImport } from './routes/_authenticated/_admin/admin/index'
+import { Route as AuthenticatedAdminAdminContenidoRouteImport } from './routes/_authenticated/_admin/admin/contenido'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +83,12 @@ const AuthenticatedAdminAdminIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedAdminAdminRouteRoute,
   } as any)
+const AuthenticatedAdminAdminContenidoRoute =
+  AuthenticatedAdminAdminContenidoRouteImport.update({
+    id: '/contenido',
+    path: '/contenido',
+    getParentRoute: () => AuthenticatedAdminAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/panel': typeof AuthenticatedPanelRoute
   '/perfil': typeof AuthenticatedPerfilRoute
   '/admin': typeof AuthenticatedAdminAdminRouteRouteWithChildren
+  '/admin/contenido': typeof AuthenticatedAdminAdminContenidoRoute
   '/admin/': typeof AuthenticatedAdminAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -104,6 +112,7 @@ export interface FileRoutesByTo {
   '/registro': typeof RegistroRoute
   '/panel': typeof AuthenticatedPanelRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/admin/contenido': typeof AuthenticatedAdminAdminContenidoRoute
   '/admin': typeof AuthenticatedAdminAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -119,6 +128,7 @@ export interface FileRoutesById {
   '/_authenticated/panel': typeof AuthenticatedPanelRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/_authenticated/_admin/admin': typeof AuthenticatedAdminAdminRouteRouteWithChildren
+  '/_authenticated/_admin/admin/contenido': typeof AuthenticatedAdminAdminContenidoRoute
   '/_authenticated/_admin/admin/': typeof AuthenticatedAdminAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/panel'
     | '/perfil'
     | '/admin'
+    | '/admin/contenido'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/registro'
     | '/panel'
     | '/perfil'
+    | '/admin/contenido'
     | '/admin'
   id:
     | '__root__'
@@ -158,6 +170,7 @@ export interface FileRouteTypes {
     | '/_authenticated/panel'
     | '/_authenticated/perfil'
     | '/_authenticated/_admin/admin'
+    | '/_authenticated/_admin/admin/contenido'
     | '/_authenticated/_admin/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -257,15 +270,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminAdminRouteRoute
     }
+    '/_authenticated/_admin/admin/contenido': {
+      id: '/_authenticated/_admin/admin/contenido'
+      path: '/contenido'
+      fullPath: '/admin/contenido'
+      preLoaderRoute: typeof AuthenticatedAdminAdminContenidoRouteImport
+      parentRoute: typeof AuthenticatedAdminAdminRouteRoute
+    }
   }
 }
 
 interface AuthenticatedAdminAdminRouteRouteChildren {
+  AuthenticatedAdminAdminContenidoRoute: typeof AuthenticatedAdminAdminContenidoRoute
   AuthenticatedAdminAdminIndexRoute: typeof AuthenticatedAdminAdminIndexRoute
 }
 
 const AuthenticatedAdminAdminRouteRouteChildren: AuthenticatedAdminAdminRouteRouteChildren =
   {
+    AuthenticatedAdminAdminContenidoRoute:
+      AuthenticatedAdminAdminContenidoRoute,
     AuthenticatedAdminAdminIndexRoute: AuthenticatedAdminAdminIndexRoute,
   }
 
