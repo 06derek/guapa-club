@@ -51,7 +51,7 @@ function Index() {
             <p className="animate-fade-up font-mono text-[11px] uppercase tracking-[0.16em] text-gold sm:text-xs sm:tracking-[0.2em]">
               {`// ${club.institution} · ${club.parent}`}
             </p>
-            <h1 className="animate-fade-up mt-5 text-[2.6rem] font-bold leading-[1.05] [overflow-wrap:anywhere] [animation-delay:80ms] min-[400px]:text-5xl sm:text-6xl lg:text-7xl">
+            <h1 className="animate-fade-up mt-5 text-[2.6rem] font-bold leading-[1.05] [animation-delay:80ms] min-[400px]:text-5xl sm:text-6xl lg:text-7xl">
               Algoritmia que se <span className="text-brand-gradient">entrena en equipo.</span>
             </h1>
             <p className="animate-fade-up mt-6 max-w-xl text-base text-muted-foreground sm:text-lg [animation-delay:160ms]">
