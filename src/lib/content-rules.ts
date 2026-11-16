@@ -25,7 +25,7 @@ const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Hora inválida (HH:M
 
 export const scheduleInputSchema = z
   .object({
-    dayOfWeek: z.coerce.number().int().min(1, "Elige un día").max(7, "Elige un día"),
+    dayOfWeek: z.string().regex(/^[1-7]$/, "Elige un día").transform(Number),
     startTime: time,
     endTime: time,
     activity: text(3, 120, "Actividad"),
