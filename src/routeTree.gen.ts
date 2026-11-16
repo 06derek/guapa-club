@@ -17,11 +17,13 @@ import { Route as HorariosRouteImport } from './routes/horarios'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/_admin/route'
+import { Route as AuthenticatedMiembrosRouteImport } from './routes/_authenticated/miembros'
 import { Route as AuthenticatedPanelRouteImport } from './routes/_authenticated/panel'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as AuthenticatedAdminAdminRouteRouteImport } from './routes/_authenticated/_admin/admin/route'
 import { Route as AuthenticatedAdminAdminIndexRouteImport } from './routes/_authenticated/_admin/admin/index'
 import { Route as AuthenticatedAdminAdminContenidoRouteImport } from './routes/_authenticated/_admin/admin/contenido'
+import { Route as AuthenticatedAdminAdminEquiposRouteImport } from './routes/_authenticated/_admin/admin/equipos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -61,6 +63,11 @@ const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/_admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMiembrosRoute = AuthenticatedMiembrosRouteImport.update({
+  id: '/miembros',
+  path: '/miembros',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPanelRoute = AuthenticatedPanelRouteImport.update({
   id: '/panel',
   path: '/panel',
@@ -89,6 +96,12 @@ const AuthenticatedAdminAdminContenidoRoute =
     path: '/contenido',
     getParentRoute: () => AuthenticatedAdminAdminRouteRoute,
   } as any)
+const AuthenticatedAdminAdminEquiposRoute =
+  AuthenticatedAdminAdminEquiposRouteImport.update({
+    id: '/equipos',
+    path: '/equipos',
+    getParentRoute: () => AuthenticatedAdminAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -97,10 +110,12 @@ export interface FileRoutesByFullPath {
   '/horarios': typeof HorariosRoute
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
+  '/miembros': typeof AuthenticatedMiembrosRoute
   '/panel': typeof AuthenticatedPanelRoute
   '/perfil': typeof AuthenticatedPerfilRoute
   '/admin': typeof AuthenticatedAdminAdminRouteRouteWithChildren
   '/admin/contenido': typeof AuthenticatedAdminAdminContenidoRoute
+  '/admin/equipos': typeof AuthenticatedAdminAdminEquiposRoute
   '/admin/': typeof AuthenticatedAdminAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -110,9 +125,11 @@ export interface FileRoutesByTo {
   '/horarios': typeof HorariosRoute
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
+  '/miembros': typeof AuthenticatedMiembrosRoute
   '/panel': typeof AuthenticatedPanelRoute
   '/perfil': typeof AuthenticatedPerfilRoute
   '/admin/contenido': typeof AuthenticatedAdminAdminContenidoRoute
+  '/admin/equipos': typeof AuthenticatedAdminAdminEquiposRoute
   '/admin': typeof AuthenticatedAdminAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -125,10 +142,12 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
   '/_authenticated/_admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/_authenticated/miembros': typeof AuthenticatedMiembrosRoute
   '/_authenticated/panel': typeof AuthenticatedPanelRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/_authenticated/_admin/admin': typeof AuthenticatedAdminAdminRouteRouteWithChildren
   '/_authenticated/_admin/admin/contenido': typeof AuthenticatedAdminAdminContenidoRoute
+  '/_authenticated/_admin/admin/equipos': typeof AuthenticatedAdminAdminEquiposRoute
   '/_authenticated/_admin/admin/': typeof AuthenticatedAdminAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -140,10 +159,12 @@ export interface FileRouteTypes {
     | '/horarios'
     | '/login'
     | '/registro'
+    | '/miembros'
     | '/panel'
     | '/perfil'
     | '/admin'
     | '/admin/contenido'
+    | '/admin/equipos'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -153,9 +174,11 @@ export interface FileRouteTypes {
     | '/horarios'
     | '/login'
     | '/registro'
+    | '/miembros'
     | '/panel'
     | '/perfil'
     | '/admin/contenido'
+    | '/admin/equipos'
     | '/admin'
   id:
     | '__root__'
@@ -167,10 +190,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/registro'
     | '/_authenticated/_admin'
+    | '/_authenticated/miembros'
     | '/_authenticated/panel'
     | '/_authenticated/perfil'
     | '/_authenticated/_admin/admin'
     | '/_authenticated/_admin/admin/contenido'
+    | '/_authenticated/_admin/admin/equipos'
     | '/_authenticated/_admin/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -242,6 +267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/miembros': {
+      id: '/_authenticated/miembros'
+      path: '/miembros'
+      fullPath: '/miembros'
+      preLoaderRoute: typeof AuthenticatedMiembrosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/panel': {
       id: '/_authenticated/panel'
       path: '/panel'
@@ -277,11 +309,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAdminContenidoRouteImport
       parentRoute: typeof AuthenticatedAdminAdminRouteRoute
     }
+    '/_authenticated/_admin/admin/equipos': {
+      id: '/_authenticated/_admin/admin/equipos'
+      path: '/equipos'
+      fullPath: '/admin/equipos'
+      preLoaderRoute: typeof AuthenticatedAdminAdminEquiposRouteImport
+      parentRoute: typeof AuthenticatedAdminAdminRouteRoute
+    }
   }
 }
 
 interface AuthenticatedAdminAdminRouteRouteChildren {
   AuthenticatedAdminAdminContenidoRoute: typeof AuthenticatedAdminAdminContenidoRoute
+  AuthenticatedAdminAdminEquiposRoute: typeof AuthenticatedAdminAdminEquiposRoute
   AuthenticatedAdminAdminIndexRoute: typeof AuthenticatedAdminAdminIndexRoute
 }
 
@@ -289,6 +329,7 @@ const AuthenticatedAdminAdminRouteRouteChildren: AuthenticatedAdminAdminRouteRou
   {
     AuthenticatedAdminAdminContenidoRoute:
       AuthenticatedAdminAdminContenidoRoute,
+    AuthenticatedAdminAdminEquiposRoute: AuthenticatedAdminAdminEquiposRoute,
     AuthenticatedAdminAdminIndexRoute: AuthenticatedAdminAdminIndexRoute,
   }
 
@@ -314,12 +355,14 @@ const AuthenticatedAdminRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedMiembrosRoute: typeof AuthenticatedMiembrosRoute
   AuthenticatedPanelRoute: typeof AuthenticatedPanelRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedMiembrosRoute: AuthenticatedMiembrosRoute,
   AuthenticatedPanelRoute: AuthenticatedPanelRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
 }
