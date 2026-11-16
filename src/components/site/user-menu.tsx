@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, LogOut, ShieldCheck, UserRound } from "lucide-react";
+import { LayoutDashboard, LogOut, ShieldCheck, Swords, UserRound, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -50,6 +50,16 @@ export function UserMenu() {
         <DropdownMenuItem asChild>
           <Link to="/perfil">
             <UserRound /> Mi perfil
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/equipos">
+            <Swords /> Equipos
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/miembros">
+            <Users /> Miembros
           </Link>
         </DropdownMenuItem>
         {isAdmin ? (
