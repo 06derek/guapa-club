@@ -1,18 +1,44 @@
-// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
-// or the app will break with duplicate plugins:
-//   - TanStack devtools (dev-only, first), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
-//     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
-//     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
-// Never set ssr.external or resolve.external: the Worker has no runtime module resolution, so
-// the build fails. Never add compression (compressPublicAssets, vite-plugin-compression):
-// hosting already compresses at the edge.
-// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+// Build/dev config for deploying GUAPA Club to Cloudflare Workers with @cloudflare/vite-plugin.
+// Follows Cloudflare's TanStack Start guide: the Cloudflare plugin owns the "ssr" environment,
+// so the server bundle runs in workerd both in `vite dev` and in production (no Nitro adapter).
+// Never set ssr.external or resolve.external: the Worker has no runtime module resolution.
+// Never add response compression: Cloudflare already compresses at the edge.
+import { defineConfig } from "vite";
+import { cloudflare } from "@cloudflare/vite-plugin";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import tsConfigPaths from "vite-tsconfig-paths";
+import path from "node:path";
 
 export default defineConfig({
-  tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
+  server: {
+    host: "::",
+    port: 8080,
   },
+  css: {
+    transformer: "lightningcss",
+  },
+  resolve: {
+    alias: { "@": path.resolve(import.meta.dirname, "./src") },
+    dedupe: [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime",
+      "@tanstack/react-query",
+      "@tanstack/query-core",
+    ],
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "react-dom/client", "react/jsx-runtime", "react/jsx-dev-runtime"],
+  },
+  plugins: [
+    tsConfigPaths({ projects: ["./tsconfig.json"] }),
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    tailwindcss(),
+    // `entry: "server"` keeps src/server.ts (SSR error wrapper) as TanStack Start's server entry.
+    tanstackStart({ server: { entry: "server" } }),
+    viteReact(),
+  ],
 });

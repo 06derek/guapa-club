@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "guapa-club",
+  "compatibility_date": "2026-11-13",
+  "compatibility_flags": ["nodejs_compat"],
+  // Custom TanStack Start entry: wraps @tanstack/react-start/server-entry with SSR error handling.
+  "main": "./src/server.ts",
+  "observability": {
+    "enabled": true
+  },
+  // Public values only (URL + publishable key). Read on the server via process.env.
+  // Never put private keys here: use `wrangler secret put NAME` instead.
+  "vars": {
+    "SUPABASE_URL": "https://rgrvoxhqoetmxbxtzpno.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_VztvHRjoxBfjmX84dq98oA_1U-w-UO4"
+  }
+}
