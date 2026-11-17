@@ -26,8 +26,8 @@ export const Route = createFileRoute("/_authenticated/equipos/")({
 function EquiposPage() {
   const { userId } = Route.useRouteContext();
   const { data: teams } = useSuspenseQuery(teamsQuery);
+  // RLS only returns teams the user belongs to (admins see every team).
   const mine = teams.filter((t) => t.memberIds.includes(userId));
-  const others = teams.filter((t) => !t.memberIds.includes(userId));
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -51,12 +51,6 @@ function EquiposPage() {
         <TeamGrid teams={mine} />
       )}
 
-      <h2 className="mt-12 text-xl font-semibold">Otros equipos ({others.length})</h2>
-      {others.length === 0 ? (
-        <p className="mt-4 text-sm text-muted-foreground">No hay más equipos por ahora.</p>
-      ) : (
-        <TeamGrid teams={others} />
-      )}
     </section>
   );
 }
