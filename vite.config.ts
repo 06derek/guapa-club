@@ -8,7 +8,6 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import tsConfigPaths from "vite-tsconfig-paths";
 import path from "node:path";
 
 export default defineConfig({
@@ -20,6 +19,8 @@ export default defineConfig({
     transformer: "lightningcss",
   },
   resolve: {
+    // Native tsconfig "paths" support (replaces the vite-tsconfig-paths plugin on Vite 8).
+    tsconfigPaths: true,
     alias: { "@": path.resolve(import.meta.dirname, "./src") },
     dedupe: [
       "react",
@@ -34,7 +35,6 @@ export default defineConfig({
     include: ["react", "react-dom", "react-dom/client", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },
   plugins: [
-    tsConfigPaths({ projects: ["./tsconfig.json"] }),
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     tailwindcss(),
     // `entry: "server"` keeps src/server.ts (SSR error wrapper) as TanStack Start's server entry.
