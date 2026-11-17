@@ -1,4 +1,5 @@
 // Build/dev config for deploying GUAPA Club to Cloudflare Workers with @cloudflare/vite-plugin.
+// Migration complete: no @lovable.dev/vite-tanstack-config, no Nitro adapter.
 // Follows Cloudflare's TanStack Start guide: the Cloudflare plugin owns the "ssr" environment,
 // so the server bundle runs in workerd both in `vite dev` and in production (no Nitro adapter).
 // Never set ssr.external or resolve.external: the Worker has no runtime module resolution.
