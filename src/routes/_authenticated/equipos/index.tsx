@@ -50,7 +50,6 @@ function EquiposPage() {
       ) : (
         <TeamGrid teams={mine} />
       )}
-
     </section>
   );
 }
